@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Driver Portal - JSTL Logistics</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body class="driverBody">
+  <div class="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="/static/jstl_logo.png" alt="JSTL Logistics" />
+      <div class="brand-text">
+        <div class="brand-title">JSTL Logistics</div>
+        <div class="brand-subtitle">Driver Portal</div>
+      </div>
+    </div>
+    <div class="links">
+      <a href="/" title="Back to Portal">Portal</a>
+    </div>
+  </div>
+
+  <div class="driverShell">
+    <div class="driverCard">
+      <h3 id="whoTitle">Driver</h3>
+      <div class="small" id="driverStatus">Loading session…</div>
+
+      <div class="row" style="margin-top:12px;">
+        <button id="logoutBtn">Logout</button>
+        <button id="refreshRouteBtn" style="margin-left:8px;">Refresh</button>
+      </div>
+
+      <div class="small" style="margin-top:12px;">
+        Location sharing: <span id="locStatus">starting…</span>
+      </div>
+    </div>
+
+    <div class="driverCard">
+      <div class="driverRouteTop">
+        <div>
+          <h3 style="margin:0;">Your Route</h3>
+          <div id="routeMeta" class="small" style="margin-top:6px;"></div>
+        </div>
+      </div>
+
+      <div id="driverMap" style="height:320px; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); margin-top:12px;"></div>
+
+      <div id="routeStops" class="driverStops" style="margin-top:12px;"></div>
+
+      <div class="small" style="margin-top:10px;">
+        Hub: <span style="color:#f8fafc;">{{ hub_address }}</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_js_key }}&libraries=geometry" defer></script>
+  <script src="/static/driver.js" defer></script>
+</body>
+</html>

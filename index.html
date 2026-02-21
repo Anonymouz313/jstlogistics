@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>JSTL Logistics Portal</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body class="portalBody">
+
+  <div class="portalShell">
+    <div class="portalBrand">
+      <img src="/static/jstl_logo.png" class="portalLogo" alt="JSTL Logistics" />
+      <div class="portalTitle">JSTL Logistics</div>
+      <div class="portalSub">Dispatch & Driver Access</div>
+    </div>
+
+    <div class="portalGrid">
+      <div class="portalCard">
+        <h3>Dispatch Login</h3>
+        <div class="small">Authorized dispatch only.</div>
+
+        <input id="dispatchUser" type="text" placeholder="Username" style="margin-top:10px;" />
+        <input id="dispatchPass" type="password" placeholder="Password" style="margin-top:10px;" />
+
+        <button id="dispatchLoginBtn" style="margin-top:12px; width:100%;">Login as Dispatch</button>
+        <div id="dispatchMsg" class="small" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="portalCard">
+        <h3>Driver Login</h3>
+        <div class="small">Enter your name (no password).</div>
+
+        <input id="driverName" type="text" placeholder="e.g. Johnny" style="margin-top:10px;" />
+        <button id="driverLoginBtn" style="margin-top:12px; width:100%;">Continue to Driver</button>
+        <div id="driverMsg" class="small" style="margin-top:10px;"></div>
+      </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    $("dispatchLoginBtn").addEventListener("click", async () => {
+      const username = $("dispatchUser").value.trim();
+      const password = $("dispatchPass").value.trim();
+      $("dispatchMsg").textContent = "";
+
+      const res = await fetch("/api/dispatch/login", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        $("dispatchMsg").textContent = data.detail || "Login failed.";
+        return;
+      }
+      window.location.href = "/dispatch";
+    });
+
+    $("driverLoginBtn").addEventListener("click", async () => {
+      const name = $("driverName").value.trim();
+      $("driverMsg").textContent = "";
+      if (!name) { $("driverMsg").textContent = "Enter your name."; return; }
+
+      const res = await fetch("/api/driver/login_simple", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ name })
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        $("driverMsg").textContent = data.detail || "Login failed.";
+        return;
+      }
+      window.location.href = "/driver";
+    });
+
+    // Enter key support
+    ["dispatchUser","dispatchPass"].forEach(id => {
+      $(id).addEventListener("keydown", (e) => { if (e.key === "Enter") $("dispatchLoginBtn").click(); });
+    });
+    $("driverName").addEventListener("keydown", (e) => { if (e.key === "Enter") $("driverLoginBtn").click(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>JSTL Logistics Routing - Dispatch</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="/static/jstl_logo.png" alt="JSTL Logistics" />
+      <div class="brand-text">
+        <div class="brand-title">JSTL Logistics</div>
+        <div class="brand-subtitle">Routing & Dispatch</div>
+      </div>
+    </div>
+    <div class="links">
+      <a href="/driver" target="_blank">Driver Portal</a>
+      <a href="/docs" target="_blank">API Docs</a>
+      <a href="/health" target="_blank">Health</a>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="panel">
+
+      <div class="card etaCard">
+        <div class="etaTop">
+          <div>
+            <div class="etaTitle">ETA</div>
+            <div class="etaBig" id="etaTotal">—</div>
+          </div>
+          <div class="etaRight">
+            <div class="etaSmall" id="etaDistance"></div>
+            <div class="etaSmall" id="etaMode"></div>
+          </div>
+        </div>
+        <div class="etaBreakdown" id="etaBreakdown"></div>
+      </div>
+
+      <h2>Route Builder</h2>
+
+      <div class="card">
+        <h3>Hub (fixed)</h3>
+        <div class="small">All routes start and end here.</div>
+        <input id="hubAddress" type="text" value="{{ hub_address }}" readonly />
+      </div>
+
+      <div class="card">
+        <h3>Dispatch Drivers (editable)</h3>
+        <div class="small">Give each route lane a label and assign it to a driver (online drivers show in Status).</div>
+        <div id="driversPanel" class="driversPanel"></div>
+        <div class="row" style="margin-top:10px;">
+          <button id="addDriverBtn">+ Add Driver</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Driver Status (Live)</h3>
+        <div class="small">Shows online drivers + last seen + route completion.</div>
+        <div id="driverStatusList" class="statusList"></div>
+      </div>
+
+      <div class="card">
+        <h3>Driver Itineraries</h3>
+        <div class="small">Solve Multi, then send route(s) to assigned driver accounts.</div>
+        <div id="itineraries"></div>
+
+        <div class="row" style="margin-top:10px;">
+          <button id="sendRoutesBtn" disabled>Send Routes to Drivers</button>
+        </div>
+        <div class="small" id="sendRoutesHint" style="margin-top:8px;">
+          Assign each lane to a driver, then Solve Multi and Send.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Stops</h3>
+        <div class="small">Add stops, solve, then optionally reorder with ↑ ↓.</div>
+        <div id="addressList" class="addressList"></div>
+
+        <div class="row" style="margin-top:10px;">
+          <button id="addAddressBtn">+ Add Stop</button>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button id="solveSingleBtn">Solve Single</button>
+          <button id="solveMultiBtn">Solve Multi</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Route Summary</h3>
+        <div id="summaryText" class="summaryText">No route yet.</div>
+      </div>
+
+      <div class="card">
+        <h3>Status</h3>
+        <div class="status" id="status">Ready.</div>
+      </div>
+
+      <div class="card">
+        <h3>Result</h3>
+        <pre id="result"></pre>
+      </div>
+    </div>
+
+    <div class="mapWrap">
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_js_key }}&libraries=places,geometry" defer></script>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

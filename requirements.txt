@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-dotenv
+requests
+ortools
+pandas
+numpy
+python-multipart
+jinja2
+python-multipart
